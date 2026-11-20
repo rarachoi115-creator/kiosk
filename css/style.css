@@ -35,10 +35,17 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* 첫 화면의 인식 테스트 이동 버튼 링크 */
+.home-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* 첫 화면의 이동 버튼 링크 */
 .nav-link {
   display: inline-block;
-  margin-top: 1.5rem;
   padding: 0.75rem 1.5rem;
   border-radius: 10px;
   background-color: #2563eb;
@@ -53,13 +60,27 @@ body {
   background-color: #1d4ed8;
 }
 
-/* 인식 테스트 화면 카드 레이아웃 */
-.test-container {
+.nav-link-secondary {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+.nav-link-secondary:hover {
+  background-color: #cbd5e1;
+}
+
+/* 인식 테스트 & 계산 화면 공통 카드 레이아웃 */
+.test-container,
+.scan-container {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
   padding: 20px;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.scan-container {
+  max-width: 860px;
 }
 
 /* 상단 헤더 (뒤로 가기 + 화면 제목) */
@@ -68,7 +89,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .page-header h1 {
@@ -110,6 +131,16 @@ body {
 .status-badge.is-running {
   background-color: #ecfdf5;
   color: #047857;
+}
+
+.status-badge.is-added {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.status-badge.is-remove {
+  background-color: #fef3c7;
+  color: #b45309;
 }
 
 .status-badge.is-error {
@@ -205,7 +236,28 @@ body {
   display: none;
 }
 
-/* 클래스별 확률 목록 */
+/* 담기 판정 시 카메라 위에 1.5초 동안 크게 보여 주는 문구 */
+.added-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  background-color: rgba(6, 95, 70, 0.78);
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  z-index: 2;
+}
+
+.added-overlay[hidden] {
+  display: none;
+}
+
+/* 테스트 화면: 클래스별 확률 목록 */
 .section-title {
   font-size: 1rem;
   font-weight: 700;
@@ -295,6 +347,234 @@ body {
   font-weight: 700;
 }
 
+/* 계산 화면(scan.html): 노트북 2단 / 모바일 1단 레이아웃 */
+.scan-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.scan-camera-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 인식 상태 및 유지 시간 진행 막대 패널 */
+.judge-panel {
+  min-height: 76px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.judge-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.candidate-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.hold-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hold-progress-wrap[hidden] {
+  display: none;
+}
+
+.hold-progress-track {
+  flex: 1;
+  height: 12px;
+  border-radius: 999px;
+  background-color: #e2e8f0;
+  overflow: hidden;
+}
+
+.hold-progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background-color: #10b981;
+}
+
+.hold-progress-text {
+  min-width: 40px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #047857;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 장바구니 패널 */
+.cart-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+}
+
+.cart-empty {
+  padding: 36px 12px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.cart-empty[hidden] {
+  display: none;
+}
+
+.cart-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.cart-list[hidden] {
+  display: none;
+}
+
+.cart-row {
+  display: grid;
+  grid-template-columns: 1fr auto minmax(76px, auto);
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+/* 방금 담긴 상품 줄 강조 */
+.cart-row.is-highlighted {
+  background-color: #ecfdf5;
+  border-color: #10b981;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.18);
+}
+
+.cart-item-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cart-color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cart-item-name {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: #0f172a;
+  word-break: keep-all;
+}
+
+.cart-item-qty {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart-item-amount {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 장바구니 하단 합계 및 결제 버튼 */
+.cart-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cart-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.cart-summary-row.is-total {
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+
+.cart-summary-row.is-total strong {
+  font-size: 1.25rem;
+  color: #1d4ed8;
+}
+
+.checkout-button {
+  margin-top: 6px;
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 12px;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.checkout-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.checkout-button:disabled {
+  background-color: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* 태블릿 이하(768px 미만)에서는 세로 1단으로 전환 */
+@media (max-width: 767px) {
+  .scan-container {
+    max-width: 520px;
+  }
+
+  .scan-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
 /* 휴대폰 화면(가로 375px 전후) 최적화 */
 @media (max-width: 420px) {
   body {
@@ -306,7 +586,8 @@ body {
     font-size: 1.6rem;
   }
 
-  .test-container {
+  .test-container,
+  .scan-container {
     padding: 16px 14px;
     border-radius: 16px;
   }
@@ -327,5 +608,13 @@ body {
 
   .prediction-percent {
     font-size: 0.85rem;
+  }
+
+  .added-overlay {
+    font-size: 1.3rem;
+  }
+
+  .cart-panel {
+    padding: 14px 12px;
   }
 }
