@@ -1,1 +1,1 @@
-{"tfjsVersion":"1.7.4","tmVersion":"2.4.19","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2026-11-20T10:37:03.917Z","userMetadata":{},"modelName":"tm-my-image-model","labels":["가위","바위","보","없음"],"imageSize":224}
+{"tfjsVersion":"1.7.4","tmVersion":"2.4.19","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2026-11-20T11:15:15.047Z","userMetadata":{},"modelName":"tm-my-image-model","labels":["오예스","쿠크다스","크리스피롤","청포도","없음"],"imageSize":224}
