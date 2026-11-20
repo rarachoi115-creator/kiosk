@@ -24,13 +24,13 @@
 
     <!-- 노트북에서는 좌우 2단, 휴대폰(375px)에서는 위아래 1단으로 배치 -->
     <div class="scan-layout">
-      <!-- 왼쪽(또는 위쪽): 카메라 + 인식 상태 및 진행 막대 -->
-      <section class="scan-camera-panel" aria-label="상품 카메라 인식 영역">
+      <!-- 왼쪽(또는 위쪽): 카메라 + 인식 상태/진행 막대 + 직접 담기 목록 -->
+      <section class="scan-camera-panel" aria-label="상품 카메라 인식 및 직접 담기 영역">
         <div class="camera-box">
           <!-- 아이폰 Safari에서도 바로 재생되도록 playsinline, muted, autoplay 지정 -->
           <video id="webcam-video" autoplay playsinline muted></video>
           <div id="camera-placeholder" class="camera-placeholder">모델 불러오는 중...</div>
-          <!-- 담기 판정 시 1.5초 동안 크게 보여 주는 안내 문구 -->
+          <!-- 담기 판정 또는 직접 담기 시 1.5초 동안 크게 보여 주는 안내 문구 -->
           <div id="added-overlay" class="added-overlay" hidden aria-live="assertive"></div>
         </div>
 
@@ -49,16 +49,34 @@
             <span id="hold-progress-text" class="hold-progress-text">0%</span>
           </div>
         </div>
+
+        <!-- 카메라 인식이 잘 안 되는 상품을 손으로 직접 담는 버튼 목록 -->
+        <div class="manual-add-panel">
+          <h2 class="section-title">직접 담기</h2>
+          <div id="manual-product-list" class="manual-product-list"></div>
+        </div>
       </section>
 
-      <!-- 오른쪽(또는 아래쪽): 장바구니 목록, 총 수량/합계, 결제 버튼 -->
+      <!-- 오른쪽(또는 아래쪽): 장바구니 목록, 전체 비우기, 총 수량/합계, 결제 버튼 -->
       <section class="cart-panel" aria-label="장바구니 영역">
-        <h2 class="section-title">장바구니</h2>
+        <div class="cart-header">
+          <h2 class="section-title">장바구니</h2>
+          <button id="clear-cart-button" class="clear-cart-button" type="button" hidden>전체 비우기</button>
+        </div>
+
+        <!-- 전체 비우기 클릭 시 정말 비울지 확인하는 안내 영역 -->
+        <div id="clear-confirm-box" class="clear-confirm-box" hidden role="alertdialog" aria-label="장바구니 전체 비우기 확인">
+          <p class="clear-confirm-message">장바구니에 담긴 상품을 모두 비울까요?</p>
+          <div class="clear-confirm-actions">
+            <button id="clear-cancel-button" class="confirm-btn confirm-cancel-btn" type="button">취소</button>
+            <button id="clear-confirm-button" class="confirm-btn confirm-ok-btn" type="button">비우기</button>
+          </div>
+        </div>
 
         <!-- 장바구니가 비어 있을 때 안내 문구 -->
         <p id="cart-empty" class="cart-empty">아직 담은 상품이 없어요</p>
 
-        <!-- 담긴 상품 목록 (상품 이름, 수량, 금액) -->
+        <!-- 담긴 상품 목록 (상품 이름, 수량 조절 버튼, 삭제 버튼, 금액) -->
         <ul id="cart-list" class="cart-list" hidden></ul>
 
         <!-- 총 수량, 합계 금액, 결제하기 버튼 -->
@@ -71,7 +89,7 @@
             <span>합계</span>
             <strong id="cart-total-price">0원</strong>
           </div>
-          <!-- 장바구니에 상품이 있을 때만 활성화, 클릭 시 아직 아무 일도 하지 않음 -->
+          <!-- 장바구니에 상품이 있을 때만 활성화, 클릭 시 아직 아무 일도 일어나지 않음 -->
           <button id="checkout-button" class="checkout-button" type="button" disabled>결제하기</button>
         </div>
       </section>

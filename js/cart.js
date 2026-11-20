@@ -137,6 +137,60 @@
     }
 
     /**
+     * 지정한 상품의 수량을 1개 늘립니다.
+     *
+     * @param {string} className
+     */
+    function increaseItem(className) {
+      const target = items.find(function (item) {
+        return item.className === className;
+      });
+
+      if (target) {
+        target.quantity += 1;
+        saveItemsToStorage(items);
+      }
+
+      return getSummary();
+    }
+
+    /**
+     * 지정한 상품의 수량을 1개 줄입니다.
+     * 수량이 1일 때 줄이면 그 상품 줄을 장바구니에서 지웁니다.
+     *
+     * @param {string} className
+     */
+    function decreaseItem(className) {
+      const index = items.findIndex(function (item) {
+        return item.className === className;
+      });
+
+      if (index !== -1) {
+        if (items[index].quantity > 1) {
+          items[index].quantity -= 1;
+        } else {
+          items.splice(index, 1);
+        }
+        saveItemsToStorage(items);
+      }
+
+      return getSummary();
+    }
+
+    /**
+     * 지정한 상품 줄을 장바구니에서 삭제합니다.
+     *
+     * @param {string} className
+     */
+    function removeItem(className) {
+      items = items.filter(function (item) {
+        return item.className !== className;
+      });
+      saveItemsToStorage(items);
+      return getSummary();
+    }
+
+    /**
      * 장바구니를 비우고 sessionStorage에서도 지웁니다.
      */
     function clear() {
@@ -149,6 +203,9 @@
       getItems: getItems,
       getSummary: getSummary,
       addItem: addItem,
+      increaseItem: increaseItem,
+      decreaseItem: decreaseItem,
+      removeItem: removeItem,
       clear: clear
     };
   }

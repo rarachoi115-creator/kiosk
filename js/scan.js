@@ -1,5 +1,5 @@
 /**
- * 계산 화면(scan.html)의 카메라 인식, 판정 규칙 연결, 장바구니 화면 갱신을 담당합니다.
+ * 계산 화면(scan.html)의 카메라 인식, 직접 담기, 장바구니 수량/삭제/비우기 제어를 담당합니다.
  */
 (function () {
   "use strict";
@@ -19,6 +19,13 @@
   const holdProgressFill = document.getElementById("hold-progress-fill");
   const holdProgressText = document.getElementById("hold-progress-text");
 
+  const manualProductList = document.getElementById("manual-product-list");
+
+  const clearCartButton = document.getElementById("clear-cart-button");
+  const clearConfirmBox = document.getElementById("clear-confirm-box");
+  const clearCancelButton = document.getElementById("clear-cancel-button");
+  const clearConfirmButton = document.getElementById("clear-confirm-button");
+
   const cartEmpty = document.getElementById("cart-empty");
   const cartList = document.getElementById("cart-list");
   const cartTotalCount = document.getElementById("cart-total-count");
@@ -35,7 +42,14 @@
   let highlightedClassName = null;
 
   /**
-   * 장바구니 데이터에 맞춰 장바구니 목록, 합계, 결제하기 버튼 상태를 다시 그립니다.
+   * 장바구니 전체 비우기 확인창을 숨깁니다.
+   */
+  function hideClearConfirm() {
+    clearConfirmBox.hidden = true;
+  }
+
+  /**
+   * 장바구니 데이터에 맞춰 목록, 수량/삭제 버튼, 전체 비우기 버튼, 합계, 결제하기 버튼을 다시 그립니다.
    */
   function renderCart() {
     const summary = cart.getSummary();
@@ -43,6 +57,12 @@
 
     cartEmpty.hidden = hasItems;
     cartList.hidden = !hasItems;
+    clearCartButton.hidden = !hasItems;
+
+    if (!hasItems) {
+      hideClearConfirm();
+    }
+
     cartList.innerHTML = "";
 
     summary.items.forEach(function (item) {
@@ -51,6 +71,10 @@
       if (highlightedClassName && item.className === highlightedClassName) {
         row.classList.add("is-highlighted");
       }
+
+      // 윗줄: 상품 색상 점 + 이름 / 금액(가격 × 수량)
+      const topRow = document.createElement("div");
+      topRow.className = "cart-row-top";
 
       const nameWrap = document.createElement("div");
       nameWrap.className = "cart-item-info";
@@ -66,17 +90,66 @@
       nameWrap.appendChild(colorDot);
       nameWrap.appendChild(nameSpan);
 
-      const qtySpan = document.createElement("span");
-      qtySpan.className = "cart-item-qty";
-      qtySpan.textContent = item.quantity + "개";
-
       const amountSpan = document.createElement("span");
       amountSpan.className = "cart-item-amount";
       amountSpan.textContent = window.formatPrice(item.price * item.quantity);
 
-      row.appendChild(nameWrap);
-      row.appendChild(qtySpan);
-      row.appendChild(amountSpan);
+      topRow.appendChild(nameWrap);
+      topRow.appendChild(amountSpan);
+
+      // 아랫줄: 수량 조절 버튼(−, 수량, +) / 삭제 버튼
+      const controlsRow = document.createElement("div");
+      controlsRow.className = "cart-row-controls";
+
+      const qtyStepper = document.createElement("div");
+      qtyStepper.className = "cart-qty-stepper";
+
+      const decreaseBtn = document.createElement("button");
+      decreaseBtn.type = "button";
+      decreaseBtn.className = "qty-btn";
+      decreaseBtn.textContent = "−";
+      decreaseBtn.setAttribute("aria-label", item.name + " 수량 줄이기");
+      decreaseBtn.addEventListener("click", function () {
+        cart.decreaseItem(item.className);
+        hideClearConfirm();
+        renderCart();
+      });
+
+      const qtySpan = document.createElement("span");
+      qtySpan.className = "cart-item-qty";
+      qtySpan.textContent = item.quantity + "개";
+
+      const increaseBtn = document.createElement("button");
+      increaseBtn.type = "button";
+      increaseBtn.className = "qty-btn";
+      increaseBtn.textContent = "+";
+      increaseBtn.setAttribute("aria-label", item.name + " 수량 늘리기");
+      increaseBtn.addEventListener("click", function () {
+        cart.increaseItem(item.className);
+        hideClearConfirm();
+        renderCart();
+      });
+
+      qtyStepper.appendChild(decreaseBtn);
+      qtyStepper.appendChild(qtySpan);
+      qtyStepper.appendChild(increaseBtn);
+
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "remove-item-button";
+      removeBtn.textContent = "삭제";
+      removeBtn.setAttribute("aria-label", item.name + " 삭제");
+      removeBtn.addEventListener("click", function () {
+        cart.removeItem(item.className);
+        hideClearConfirm();
+        renderCart();
+      });
+
+      controlsRow.appendChild(qtyStepper);
+      controlsRow.appendChild(removeBtn);
+
+      row.appendChild(topRow);
+      row.appendChild(controlsRow);
       cartList.appendChild(row);
     });
 
@@ -123,6 +196,63 @@
       renderCart();
       highlightTimerId = null;
     }, 1500);
+  }
+
+  /**
+   * 상품을 장바구니에 1개 담고 화면 안내와 강조 표시를 함께 실행합니다.
+   * (카메라 인식 담기와 직접 담기 버튼 양쪽에서 공통으로 사용)
+   * @param {{ className: string, name: string, price: number, color?: string }} product
+   */
+  function addProductWithFeedback(product) {
+    if (!product) {
+      return;
+    }
+
+    cart.addItem(product);
+    hideClearConfirm();
+    showAddedOverlay(product.name);
+    highlightCartRow(product.className);
+  }
+
+  /**
+   * 가격표(PRODUCTS)를 읽어 "직접 담기" 상품 버튼 목록을 만듭니다.
+   */
+  function renderManualProducts() {
+    manualProductList.innerHTML = "";
+    const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
+
+    products.forEach(function (product) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "manual-product-btn";
+
+      const titleWrap = document.createElement("span");
+      titleWrap.className = "manual-product-title";
+
+      const colorDot = document.createElement("span");
+      colorDot.className = "cart-color-dot";
+      colorDot.style.backgroundColor = product.color || "#64748b";
+
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "manual-product-name";
+      nameSpan.textContent = product.name;
+
+      titleWrap.appendChild(colorDot);
+      titleWrap.appendChild(nameSpan);
+
+      const priceSpan = document.createElement("span");
+      priceSpan.className = "manual-product-price";
+      priceSpan.textContent = window.formatPrice(product.price);
+
+      btn.appendChild(titleWrap);
+      btn.appendChild(priceSpan);
+
+      btn.addEventListener("click", function () {
+        addProductWithFeedback(product);
+      });
+
+      manualProductList.appendChild(btn);
+    });
   }
 
   /**
@@ -219,9 +349,7 @@
 
     if (decision.status === "담김" && decision.addedProduct) {
       const added = decision.addedProduct;
-      cart.addItem(added);
-      showAddedOverlay(added.name);
-      highlightCartRow(added.className);
+      addProductWithFeedback(added);
       showProgressBar(added.name, 1);
       setStatusBadge(added.name + " 담김!", "added");
       return;
@@ -259,6 +387,22 @@
     errorSolution.textContent = "";
   }
 
+  // 전체 비우기 버튼 클릭 시 확인 문구 표시
+  clearCartButton.addEventListener("click", function () {
+    clearConfirmBox.hidden = false;
+  });
+
+  clearCancelButton.addEventListener("click", function () {
+    hideClearConfirm();
+  });
+
+  clearConfirmButton.addEventListener("click", function () {
+    highlightedClassName = null;
+    cart.clear();
+    hideClearConfirm();
+    renderCart();
+  });
+
   // 공용 인식기 연결
   const recognizer = window.createRecognizer({
     videoElement: videoElement,
@@ -291,7 +435,8 @@
     recognizer.stop();
   });
 
-  // 초기 장바구니 복원(sessionStorage) 및 카메라 인식 시작
+  // 초기 직접 담기 버튼 생성, 장바구니 복원(sessionStorage) 및 카메라 인식 시작
+  renderManualProducts();
   renderCart();
   startScan();
 })();

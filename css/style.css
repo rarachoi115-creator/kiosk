@@ -45,7 +45,10 @@ body {
 
 /* 첫 화면의 이동 버튼 링크 */
 .nav-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   padding: 0.75rem 1.5rem;
   border-radius: 10px;
   background-color: #2563eb;
@@ -80,7 +83,7 @@ body {
 }
 
 .scan-container {
-  max-width: 860px;
+  max-width: 880px;
 }
 
 /* 상단 헤더 (뒤로 가기 + 화면 제목) */
@@ -89,6 +92,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
+  min-height: 44px;
   margin-bottom: 16px;
 }
 
@@ -100,6 +104,9 @@ body {
 .back-link {
   position: absolute;
   left: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: #475569;
   font-size: 0.9rem;
   font-weight: 600;
@@ -179,12 +186,13 @@ body {
 
 .retry-button {
   margin-top: 10px;
-  padding: 8px 14px;
+  min-height: 44px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: #dc2626;
   color: #ffffff;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -236,7 +244,7 @@ body {
   display: none;
 }
 
-/* 담기 판정 시 카메라 위에 1.5초 동안 크게 보여 주는 문구 */
+/* 담기 판정 및 직접 담기 시 카메라 위에 1.5초 동안 크게 보여 주는 문구 */
 .added-overlay {
   position: absolute;
   inset: 0;
@@ -422,6 +430,68 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* 직접 담기 패널 (카메라 영역 아래) */
+.manual-add-panel {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+}
+
+.manual-product-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.manual-product-btn {
+  min-height: 54px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.manual-product-btn:hover {
+  background-color: #eff6ff;
+  border-color: #93c5fd;
+}
+
+.manual-product-btn:active {
+  background-color: #dbeafe;
+}
+
+.manual-product-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.manual-product-name {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #0f172a;
+  word-break: keep-all;
+}
+
+.manual-product-price {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #475569;
+  padding-left: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
 /* 장바구니 패널 */
 .cart-panel {
   display: flex;
@@ -431,6 +501,87 @@ body {
   border-radius: 16px;
   border: 1px solid #e2e8f0;
   background-color: #f8fafc;
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 44px;
+  margin-bottom: 10px;
+}
+
+.cart-header .section-title {
+  margin-bottom: 0;
+}
+
+/* 전체 비우기 버튼 (손가락으로 누르기 쉬운 높이 44px 이상) */
+.clear-cart-button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #b91c1c;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.clear-cart-button:hover {
+  background-color: #fef2f2;
+}
+
+.clear-cart-button[hidden] {
+  display: none;
+}
+
+/* 전체 비우기 확인 안내 박스 */
+.clear-confirm-box {
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #fca5a5;
+  background-color: #fef2f2;
+}
+
+.clear-confirm-box[hidden] {
+  display: none;
+}
+
+.clear-confirm-message {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #7f1d1d;
+  margin-bottom: 10px;
+}
+
+.clear-confirm-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.confirm-btn {
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.confirm-cancel-btn {
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #334155;
+}
+
+.confirm-ok-btn {
+  border: none;
+  background-color: #dc2626;
+  color: #ffffff;
 }
 
 .cart-empty {
@@ -448,7 +599,7 @@ body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 16px;
 }
 
@@ -457,15 +608,14 @@ body {
 }
 
 .cart-row {
-  display: grid;
-  grid-template-columns: 1fr auto minmax(76px, auto);
-  align-items: center;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  padding: 11px 12px;
+  padding: 12px;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   background-color: #ffffff;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 /* 방금 담긴 상품 줄 강조 */
@@ -473,6 +623,13 @@ body {
   background-color: #ecfdf5;
   border-color: #10b981;
   box-shadow: 0 2px 10px rgba(16, 185, 129, 0.18);
+}
+
+.cart-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .cart-item-info {
@@ -490,25 +647,78 @@ body {
 }
 
 .cart-item-name {
-  font-size: 0.96rem;
-  font-weight: 600;
+  font-size: 0.98rem;
+  font-weight: 700;
   color: #0f172a;
   word-break: keep-all;
 }
 
-.cart-item-qty {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #475569;
-  font-variant-numeric: tabular-nums;
-}
-
 .cart-item-amount {
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 700;
   color: #0f172a;
   text-align: right;
   font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.cart-row-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cart-qty-stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 손가락으로 누르기 쉬운 수량 증감 및 삭제 버튼 (높이 44px 이상) */
+.qty-btn {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.qty-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.cart-item-qty {
+  min-width: 40px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
+  font-variant-numeric: tabular-nums;
+}
+
+.remove-item-button {
+  min-height: 44px;
+  min-width: 58px;
+  padding: 0 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  color: #64748b;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.remove-item-button:hover {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
 }
 
 /* 장바구니 하단 합계 및 결제 버튼 */
@@ -542,7 +752,8 @@ body {
 .checkout-button {
   margin-top: 6px;
   width: 100%;
-  padding: 14px 16px;
+  min-height: 48px;
+  padding: 12px 16px;
   border: none;
   border-radius: 12px;
   background-color: #2563eb;
@@ -614,6 +825,7 @@ body {
     font-size: 1.3rem;
   }
 
+  .manual-add-panel,
   .cart-panel {
     padding: 14px 12px;
   }
