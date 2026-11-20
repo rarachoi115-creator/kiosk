@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>인식 테스트 - 몽글 마트 무인 계산대</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container test-container">
+    <!-- 상단 제목 및 첫 화면 이동 링크 -->
+    <header class="page-header">
+      <a class="back-link" href="index.html">← 처음으로</a>
+      <h1>인식 테스트</h1>
+    </header>
+
+    <!-- 현재 진행 상태 안내 배지 -->
+    <section class="status-section" aria-live="polite">
+      <p id="status-message" class="status-badge is-loading">모델 불러오는 중...</p>
+    </section>
+
+    <!-- 오류 발생 시 이유와 해결 방법을 보여 주는 안내 영역 -->
+    <section id="error-box" class="error-box" hidden role="alert">
+      <h2 class="error-title">실행할 수 없습니다</h2>
+      <p id="error-reason" class="error-reason"></p>
+      <p id="error-solution" class="error-solution"></p>
+      <button id="retry-button" class="retry-button" type="button">다시 시도</button>
+    </section>
+
+    <!-- 정사각형 카메라 미리보기 영역 (가운데 정사각형만 잘라 거울 모드로 표시) -->
+    <section class="camera-section">
+      <div class="camera-box">
+        <!-- 아이폰 Safari에서도 바로 재생되도록 playsinline, muted, autoplay 속성 지정 -->
+        <video id="webcam-video" autoplay playsinline muted></video>
+        <div id="camera-placeholder" class="camera-placeholder">카메라 화면 준비 중</div>
+      </div>
+    </section>
+
+    <!-- 모델 클래스별 확률 목록 영역 (모델에서 읽은 클래스 목록을 동적으로 채움) -->
+    <section class="predictions-section" aria-label="상품 인식 확률 목록">
+      <h2 class="section-title">인식 결과</h2>
+      <ul id="prediction-list" class="prediction-list">
+        <li class="prediction-empty">모델 클래스를 불러오는 중입니다...</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- 고정 버전의 TensorFlow.js 및 Teachable Machine 이미지 라이브러리 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.5/dist/teachablemachine-image.min.js"></script>
+
+  <!-- 카메라·모델 제어 모듈 및 테스트 화면 스크립트 -->
+  <script src="js/recognizer.js"></script>
+  <script src="js/test.js"></script>
+</body>
+</html>
