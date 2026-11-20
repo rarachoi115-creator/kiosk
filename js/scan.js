@@ -422,9 +422,12 @@
 
   retryButton.addEventListener("click", startScan);
 
-  // 결제하기 버튼은 결제 화면 구현 전까지 눌러도 아무 동작을 하지 않음
+  // 결제하기 버튼을 누르면 장바구니가 비어 있지 않을 때 결제 화면으로 이동
   checkoutButton.addEventListener("click", function () {
-    // 의도적으로 비워 둠
+    if (cart.getSummary().items.length === 0) {
+      return;
+    }
+    window.location.href = "pay.html";
   });
 
   // 화면을 떠날 때 카메라 끄기

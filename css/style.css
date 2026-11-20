@@ -72,9 +72,11 @@ body {
   background-color: #cbd5e1;
 }
 
-/* 인식 테스트 & 계산 화면 공통 카드 레이아웃 */
+/* 인식 테스트, 계산, 결제, 완료 화면 공통 카드 레이아웃 */
 .test-container,
-.scan-container {
+.scan-container,
+.pay-container,
+.receipt-container {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
@@ -786,6 +788,284 @@ body {
   }
 }
 
+/* 결제 화면(pay.html) 및 완료 화면(receipt.html) 공통 스타일 */
+.empty-state-view {
+  padding: 36px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.empty-state-view[hidden] {
+  display: none;
+}
+
+.empty-state-message {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.primary-action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 12px;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.primary-action-link:hover {
+  background-color: #1d4ed8;
+}
+
+.pay-section {
+  margin-bottom: 18px;
+}
+
+.order-summary-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.order-summary-row {
+  display: grid;
+  grid-template-columns: 1fr auto minmax(76px, auto);
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.order-item-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.order-item-name {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: #0f172a;
+  word-break: keep-all;
+}
+
+.order-item-qty {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-item-amount {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.pay-totals-box {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pay-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.pay-total-row strong {
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pay-total-row.is-grand-total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pay-total-row.is-grand-total strong {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #1d4ed8;
+}
+
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.payment-method-btn {
+  min-height: 56px;
+  padding: 10px 8px;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: #334155;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.payment-method-btn:hover:not(:disabled) {
+  border-color: #93c5fd;
+  background-color: #f8fafc;
+}
+
+.payment-method-btn.is-selected {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.18);
+}
+
+.payment-method-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.pay-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.secondary-action-btn {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  color: #334155;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary-action-btn:hover:not(:disabled) {
+  background-color: #e2e8f0;
+}
+
+.secondary-action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 완료 화면(receipt.html) */
+.receipt-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.receipt-check-badge {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background-color: #dcfce7;
+  color: #15803d;
+  font-size: 1.6rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.receipt-header h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.receipt-card {
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+}
+
+.receipt-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.receipt-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.94rem;
+}
+
+.receipt-meta-row dt {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.receipt-meta-row dd {
+  color: #0f172a;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.receipt-divider {
+  margin: 14px 0;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.receipt-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.receipt-total-row strong {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1d4ed8;
+  font-variant-numeric: tabular-nums;
+}
+
+.receipt-disclaimer {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
 /* 휴대폰 화면(가로 375px 전후) 최적화 */
 @media (max-width: 420px) {
   body {
@@ -798,7 +1078,9 @@ body {
   }
 
   .test-container,
-  .scan-container {
+  .scan-container,
+  .pay-container,
+  .receipt-container {
     padding: 16px 14px;
     border-radius: 16px;
   }

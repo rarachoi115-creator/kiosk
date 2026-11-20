@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>결제하기 - 몽글 마트 무인 계산대</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container pay-container">
+    <!-- 장바구니가 비어 있을 때만 보여 주는 안내 화면 -->
+    <section id="pay-empty-view" class="empty-state-view" hidden>
+      <p class="empty-state-message">담은 상품이 없어요</p>
+      <a class="primary-action-link" href="scan.html">계산 화면으로 가기</a>
+    </section>
+
+    <!-- 장바구니에 상품이 있을 때 보여 주는 결제 화면 -->
+    <div id="pay-main-view" hidden>
+      <header class="page-header">
+        <h1>결제하기</h1>
+      </header>
+
+      <!-- 주문 내역 요약 영역 -->
+      <section class="pay-section" aria-label="주문 내역">
+        <h2 class="section-title">주문 내역</h2>
+        <ul id="pay-order-list" class="order-summary-list"></ul>
+
+        <div class="pay-totals-box">
+          <div class="pay-total-row">
+            <span>총 수량</span>
+            <strong id="pay-total-count">0개</strong>
+          </div>
+          <div class="pay-total-row is-grand-total">
+            <span>합계</span>
+            <strong id="pay-total-price">0원</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- 결제 수단 선택 영역 -->
+      <section class="pay-section" aria-label="결제 수단 선택">
+        <h2 class="section-title">결제 수단</h2>
+        <div id="payment-methods" class="payment-methods-grid">
+          <button type="button" class="payment-method-btn" data-method="카드" aria-pressed="false">카드</button>
+          <button type="button" class="payment-method-btn" data-method="간편결제" aria-pressed="false">간편결제</button>
+          <button type="button" class="payment-method-btn" data-method="현금" aria-pressed="false">현금</button>
+        </div>
+      </section>
+
+      <!-- 하단 실행 버튼: 결제하기 / 상품 더 담기 -->
+      <div class="pay-actions">
+        <button id="pay-submit-button" class="checkout-button" type="button" disabled>결제하기</button>
+        <button id="back-to-scan-button" class="secondary-action-btn" type="button">상품 더 담기</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/order.js"></script>
+  <script src="js/pay.js"></script>
+</body>
+</html>

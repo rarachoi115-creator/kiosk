@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>결제 완료 - 몽글 마트 무인 계산대</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container receipt-container">
+    <!-- 결제를 거치지 않고 바로 들어왔을 때 보여 주는 안내 화면 -->
+    <section id="receipt-empty-view" class="empty-state-view" hidden>
+      <p class="empty-state-message">주문 내역이 없어요</p>
+      <a class="primary-action-link" href="index.html">시작 화면으로 가기</a>
+    </section>
+
+    <!-- 결제가 완료되었을 때 보여 주는 영수증 화면 -->
+    <div id="receipt-main-view" hidden>
+      <header class="receipt-header">
+        <div class="receipt-check-badge" aria-hidden="true">✓</div>
+        <h1>결제가 완료되었습니다</h1>
+      </header>
+
+      <!-- 영수증 카드 -->
+      <section class="receipt-card" aria-label="영수증">
+        <dl class="receipt-meta">
+          <div class="receipt-meta-row">
+            <dt>주문 번호</dt>
+            <dd id="receipt-order-number">-</dd>
+          </div>
+          <div class="receipt-meta-row">
+            <dt>결제 시각</dt>
+            <dd id="receipt-paid-at">-</dd>
+          </div>
+          <div class="receipt-meta-row">
+            <dt>결제 수단</dt>
+            <dd id="receipt-payment-method">-</dd>
+          </div>
+        </dl>
+
+        <div class="receipt-divider"></div>
+
+        <h2 class="section-title">주문 내역</h2>
+        <ul id="receipt-items-list" class="order-summary-list"></ul>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-total-row">
+          <span>합계</span>
+          <strong id="receipt-total-price">0원</strong>
+        </div>
+      </section>
+
+      <button id="new-order-button" class="checkout-button" type="button">새 주문 시작</button>
+
+      <p class="receipt-disclaimer">실습용 화면입니다. 실제 결제는 이루어지지 않았습니다.</p>
+    </div>
+  </main>
+
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/order.js"></script>
+  <script src="js/receipt.js"></script>
+</body>
+</html>
